@@ -43,11 +43,14 @@ def connect():
     try:
         from pymongo import MongoClient
         from pymongo.errors import ConnectionFailure
+        import certifi
 
         _client = MongoClient(
             MONGODB_URI,
             serverSelectionTimeoutMS=5000,  # fail fast
             connectTimeoutMS=5000,
+            tls=True,
+            tlsCAFile=certifi.where(),
         )
         # Force a round-trip to verify the connection
         _client.admin.command("ping")

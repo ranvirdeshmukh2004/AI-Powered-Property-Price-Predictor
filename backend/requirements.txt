@@ -8,3 +8,4 @@ joblib
 python-multipart
 pymongo[srv]
 python-dotenv
+certifi
