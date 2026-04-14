@@ -3,7 +3,7 @@
  * Handles all communication with the FastAPI backend.
  */
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
 class ApiError extends Error {
   constructor(message, status) {
@@ -70,4 +70,14 @@ export async function fetchStats() {
 /** Fetch amenity impact data */
 export async function fetchAmenityImpact() {
   return request('/amenity-impact');
+}
+
+/** Fetch recent prediction history from MongoDB */
+export async function fetchHistory() {
+  return request('/history');
+}
+
+/** Fetch corridor comparison stats from prediction history */
+export async function fetchCorridorHistoryStats() {
+  return request('/history/corridor-stats');
 }

@@ -4,12 +4,14 @@ Pune EstateLens — FastAPI Backend
 REST API for property price prediction serving an XGBoost model.
 
 Endpoints:
-  POST /api/predict     — Single property valuation
-  POST /api/compare     — Side-by-side corridor comparison
-  GET  /api/stats       — Aggregate market statistics
-  GET  /api/amenity-impact — Amenity impact analysis data
-  GET  /api/meta        — Model metadata (corridors, localities)
-  GET  /api/health      — Health check
+  POST /api/predict              — Single property valuation
+  POST /api/compare              — Side-by-side corridor comparison
+  GET  /api/stats                — Aggregate market statistics
+  GET  /api/amenity-impact       — Amenity impact analysis data
+  GET  /api/meta                 — Model metadata (corridors, localities)
+  GET  /api/health               — Health check
+  GET  /api/history              — Recent prediction history (MongoDB)
+  GET  /api/history/corridor-stats — Corridor comparison from history
 """
 
 import os
@@ -27,6 +29,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field, field_validator
 
 from model.train_model import train_and_evaluate
+import database as db
 
 
 # ──────────────────────────────────────────────────────────
@@ -47,7 +50,7 @@ METRICS_PATH = os.path.join(BASE_DIR, "model", "metrics.json")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load model and data on startup."""
+    """Load model, data, and MongoDB connection on startup."""
     global MODEL, DATASET, MODEL_META, MODEL_METRICS
 
     if not os.path.exists(MODEL_PATH):
@@ -63,8 +66,16 @@ async def lifespan(app: FastAPI):
         with open(METRICS_PATH) as f:
             MODEL_METRICS = json.load(f)
 
-    print("✅ Model and data loaded successfully")
+    # Connect to MongoDB (graceful — won't crash if unavailable)
+    mongo_ok = db.connect()
+    if mongo_ok:
+        print("✅ Model, data, and MongoDB loaded successfully")
+    else:
+        print("✅ Model and data loaded (MongoDB unavailable — predictions won't be logged)")
+
     yield
+
+    db.disconnect()
     print("🛑 Shutting down")
 
 
@@ -81,8 +92,8 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -186,12 +197,21 @@ def predict_price(prop: PropertyInput) -> PredictionResponse:
 # Endpoints
 # ──────────────────────────────────────────────────────────
 
+from fastapi.responses import RedirectResponse
+
+@app.get("/")
+async def root():
+    """Redirect straight to the FastAPI interactive UI."""
+    return RedirectResponse(url="/docs")
+
+
 @app.get("/api/health")
 async def health_check():
     return {
         "status": "healthy",
         "model_loaded": MODEL is not None,
         "dataset_size": len(DATASET) if DATASET is not None else 0,
+        "mongodb_connected": db.is_connected(),
         "metrics": MODEL_METRICS,
     }
 
@@ -206,7 +226,35 @@ async def get_model_meta():
 async def predict(prop: PropertyInput):
     """Predict property price for a single configuration."""
     try:
-        return predict_price(prop)
+        result = predict_price(prop)
+
+        # Log to MongoDB (fire-and-forget — never blocks the response)
+        amenities_score = prop.parking + prop.gym + prop.swimming_pool + prop.garden + prop.security + prop.clubhouse
+        db.log_prediction(
+            input_data={
+                "corridor": prop.corridor,
+                "locality": prop.locality,
+                "bhk": prop.bhk,
+                "sqft": prop.sqft,
+                "bathrooms": prop.bathrooms,
+                "floor": prop.floor,
+                "parking": prop.parking,
+                "gym": prop.gym,
+                "swimming_pool": prop.swimming_pool,
+                "garden": prop.garden,
+                "security": prop.security,
+                "clubhouse": prop.clubhouse,
+                "amenities_score": amenities_score,
+            },
+            prediction_data={
+                "predicted_price_lakhs": result.predicted_price_lakhs,
+                "price_per_sqft": result.price_per_sqft,
+                "confidence_low": result.confidence_band["low"],
+                "confidence_high": result.confidence_band["high"],
+            },
+        )
+
+        return result
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -249,7 +297,7 @@ async def compare(prop: PropertyInput):
 @app.get("/api/stats")
 async def get_stats():
     """Return aggregate statistics for dashboard charts."""
-    df = DATASET
+    df = DATASET.copy()
 
     # Average price per sqft by locality
     df["price_per_sqft"] = (df["price_lakhs"] * 100000) / df["sqft"]
@@ -325,6 +373,35 @@ async def get_amenity_impact():
     # Sort by impact
     impact_data.sort(key=lambda x: x["premium_percent"], reverse=True)
     return impact_data
+
+
+# ──────────────────────────────────────────────────────────
+# History Endpoints (MongoDB)
+# ──────────────────────────────────────────────────────────
+
+@app.get("/api/history")
+async def get_prediction_history():
+    """Return recent prediction records from MongoDB."""
+    records = db.get_recent_predictions(limit=50)
+    # Convert datetime objects to ISO strings for JSON serialization
+    for r in records:
+        if "timestamp" in r and hasattr(r["timestamp"], "isoformat"):
+            r["timestamp"] = r["timestamp"].isoformat()
+    return {
+        "records": records,
+        "count": len(records),
+        "mongodb_connected": db.is_connected(),
+    }
+
+
+@app.get("/api/history/corridor-stats")
+async def get_corridor_history_stats():
+    """Aggregate prediction history by corridor for comparison visualization."""
+    stats = db.get_corridor_stats()
+    return {
+        "corridor_stats": stats,
+        "mongodb_connected": db.is_connected(),
+    }
 
 
 @app.post("/api/retrain")

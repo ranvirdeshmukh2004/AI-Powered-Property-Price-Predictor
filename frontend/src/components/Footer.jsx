@@ -1,4 +1,6 @@
-import { ExternalLink, Heart, Cpu, Database, BarChart3 } from 'lucide-react';
+import { ExternalLink, Cpu, Database, BarChart3 } from 'lucide-react';
+
+const REPO_URL = 'https://github.com/ranvirdeshmukh/AI-Powered-Property-Price-Predictor';
 
 export default function Footer() {
   const techStack = [
@@ -12,13 +14,8 @@ export default function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          {/* Left — Branding */}
+          {/* Left — Disclaimer */}
           <div className="text-center md:text-left">
-            <p className="text-surface-500 text-sm">
-              Built with{' '}
-              <Heart className="w-3.5 h-3.5 inline text-red-400 fill-red-400 mx-0.5" />{' '}
-              for Pune&apos;s real estate market
-            </p>
             <p className="text-surface-600 text-xs mt-1">
               Predictions are AI-generated estimates. Always consult a professional for investment decisions.
             </p>
@@ -37,15 +34,16 @@ export default function Footer() {
             ))}
           </div>
 
-          {/* Right — Links */}
+          {/* Right — GitHub CTA + Copyright */}
           <div className="flex items-center gap-4">
             <a
-              href="https://github.com"
+              href={REPO_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-surface-500 hover:text-brand-400 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-surface-800/60 border border-surface-700 hover:border-brand-500/50 hover:bg-surface-700/60 text-surface-300 hover:text-brand-400 transition-all duration-300 text-xs font-medium group"
             >
-              <ExternalLink className="w-5 h-5" />
+              <ExternalLink className="w-3.5 h-3.5 group-hover:scale-110 transition-transform" />
+              Check out the entire repo →
             </a>
             <span className="text-surface-600 text-xs">
               © {new Date().getFullYear()} EstateLens

@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import Header from '../components/Header';
 import PredictionForm from '../components/PredictionForm';
 import PredictionResult from '../components/PredictionResult';
 import Dashboard from '../components/Dashboard';
-import Footer from '../components/Footer';
 import { fetchMeta, predictPrice } from '../api';
 import { AlertTriangle, RefreshCw, Wifi } from 'lucide-react';
 
@@ -171,43 +169,7 @@ export default function PredictPage() {
         </section>
       )}
 
-      {/* Featured Aesthetics / Photos Section */}
-      <section className="mb-8 animate-fade-in-up">
-        <div className="mb-6">
-          <h2 className="text-2xl font-display font-bold text-white tracking-tight">Market Aesthetics</h2>
-          <p className="text-surface-400 text-sm">Visualizing the standard of luxury living across Pune's top real estate corridors.</p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Photo 1 */}
-          <div className="group relative overflow-hidden rounded-2xl glass-card aspect-video border border-white/[0.06]">
-            <img 
-              src="/luxury_interior.png" 
-              alt="Luxury Apartment Interior" 
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-surface-950 via-surface-950/20 to-transparent opacity-80" />
-            <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-              <span className="badge-brand mb-2">Modern Interiors</span>
-              <h3 className="text-white font-bold text-lg">Smart Home Integrated Specs</h3>
-            </div>
-          </div>
-          
-          {/* Photo 2 */}
-          <div className="group relative overflow-hidden rounded-2xl glass-card aspect-video border border-white/[0.06]">
-            <img 
-              src="/luxury_amenities.png" 
-              alt="Premium Amenities" 
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-surface-950 via-surface-950/20 to-transparent opacity-80" />
-            <div className="absolute bottom-6 left-6 right-6 translate-y-4 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
-              <span className="badge-accent mb-2">Premium Amenities</span>
-              <h3 className="text-white font-bold text-lg">Skyline Infinity Pools</h3>
-            </div>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }

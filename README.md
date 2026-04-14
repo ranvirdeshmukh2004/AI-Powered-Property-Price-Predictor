@@ -5,11 +5,12 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/React-18-61DAFB?logo=react" alt="React" />
-  <img src="https://img.shields.io/badge/Vite-5-646CFF?logo=vite" alt="Vite" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite" alt="Vite" />
   <img src="https://img.shields.io/badge/Tailwind-3-38B2AC?logo=tailwindcss" alt="Tailwind" />
   <img src="https://img.shields.io/badge/FastAPI-0.115-009688?logo=fastapi" alt="FastAPI" />
   <img src="https://img.shields.io/badge/XGBoost-2.1-blue" alt="XGBoost" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-47A248?logo=mongodb" alt="MongoDB" />
   <img src="https://img.shields.io/badge/Python-3.9+-3776AB?logo=python" alt="Python" />
 </p>
 
@@ -17,7 +18,7 @@
 
 ## 📋 Overview
 
-**Pune EstateLens** is a full-stack web application that provides real-time AI-driven residential property valuations across Pune's two fastest-growing corridors:
+**Pune EstateLens** is a full-stack AI-powered web application that provides real-time residential property valuations across Pune's two fastest-growing corridors. Every prediction is logged to MongoDB Atlas for historical analytics and corridor comparison.
 
 | Corridor | Direction | Key Localities |
 |----------|-----------|---------------|
@@ -29,35 +30,42 @@
 - 🏠 **Predictive Engine** — Input property specs (BHK, sq.ft., bathrooms, floor, amenities) and get instant valuations in ₹ Lakhs
 - 🔄 **Corridor Comparison** — "What If" feature shows how the same property would be priced in the alternate corridor
 - 📊 **Market Dashboard** — Interactive charts visualizing price trends, BHK comparisons, and amenity impact analysis
-- 🎨 **Premium UI** — Dark glassmorphism design with smooth animations, gradient accents, and responsive layout
+- 🗺️ **Interactive Maps** — Leaflet-based corridor visualization with custom markers and route overlays
+- 🎨 **3D Visualization** — Real-time isometric architectural animation built with pure Canvas 2D
+- 📜 **Prediction History** — MongoDB-backed log of all predictions with scatter charts and corridor analytics
+- 🔁 **Live Model Retraining** — Upload new CSV data to retrain the XGBoost model with safe-fallback mechanism
+- 🎯 **Premium Dark UI** — Glassmorphism design with smooth animations and responsive layout
 
 ---
 
 ## 🛠️ Tech Stack
 
 | Layer | Technology | Purpose |
-|-------|-----------|---------|
-| **Frontend** | React 18 + Vite | Single-page application |
+|-------|-----------|---------| 
+| **Frontend** | React 19 + Vite 8 | Single-page application |
 | **Styling** | Tailwind CSS v3 | Responsive, utility-first styling |
 | **Charts** | Recharts | Interactive data visualizations |
+| **Maps** | React Leaflet | Corridor & locality mapping |
 | **Icons** | Lucide React | Consistent icon system |
 | **Backend** | FastAPI (Python) | REST API serving predictions |
 | **ML Model** | XGBoost + Scikit-learn | Regression model for price prediction |
+| **Database** | MongoDB Atlas | Prediction history & analytics persistence |
 | **Data** | Pandas + NumPy | Dataset generation and processing |
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Local Development)
 
 ### Prerequisites
 
 - **Python** 3.9+
 - **Node.js** 18+ (with npm)
+- **MongoDB Atlas** account (free tier works)
 
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/ranvirdeshmukh/AI-Powered-Property-Price-Predictor.git
 cd AI-Powered-Property-Price-Predictor
 ```
 
@@ -67,20 +75,24 @@ cd AI-Powered-Property-Price-Predictor
 # Install Python dependencies
 pip install -r backend/requirements.txt
 
-# Generate the synthetic dataset
+# Generate the synthetic dataset (if not present)
 cd backend/data
 python generate_dataset.py
 
-# Train the XGBoost model
+# Train the XGBoost model (if not present)
 cd ../model
 python train_model.py
 
-# Start the FastAPI server
+# Configure MongoDB
 cd ..
-uvicorn main:app --reload --port 8000
+# Edit backend/.env and set your MONGODB_URI
+# Example: MONGODB_URI=mongodb+srv://user:pass@cluster.mongodb.net/?appName=Cluster0
+
+# Start the FastAPI server
+python3 -m uvicorn main:app --reload --port 8000
 ```
 
-The API will be available at `http://localhost:8000`. You can explore the auto-generated docs at `http://localhost:8000/docs`.
+The API will be available at `http://localhost:8000`. Interactive docs at `http://localhost:8000/docs`.
 
 ### 3. Frontend Setup
 
@@ -93,113 +105,74 @@ npm install
 npm run dev
 ```
 
-Open `http://localhost:5173` in your browser.
+Open the URL shown in the terminal (typically `http://localhost:5173`).
+
+### 4. Environment Variables
+
+| Variable | Location | Description |
+|----------|----------|-------------|
+| `MONGODB_URI` | `backend/.env` | MongoDB Atlas connection string |
+| `VITE_API_BASE_URL` | Vercel env vars (production only) | Backend API URL for production |
 
 ---
 
 ## 🧠 Machine Learning Model
 
-### Architecture
+| Metric | Value |
+|--------|-------|
+| **Algorithm** | XGBoost Regression |
+| **Features** | 13 (2 categorical + 11 numeric) |
+| **Test R²** | ~0.91 |
+| **Cross-Validation** | 5-fold |
+| **Training Data** | 2,000+ synthetic records |
 
-The price prediction engine uses an **XGBoost Regressor** wrapped in a Scikit-learn pipeline:
+### Feature Set
 
-```
-Input Features → ColumnTransformer → XGBRegressor → Price (₹ Lakhs)
-                  ├─ OneHotEncoder (corridor, locality)
-                  └─ StandardScaler (numeric features)
-```
-
-### Features
-
-| Feature | Type | Description |
-|---------|------|-------------|
-| `corridor` | Categorical | Growth corridor identifier |
-| `locality` | Categorical | Specific neighborhood |
-| `bhk` | Integer (1–4) | Bedroom-Hall-Kitchen configuration |
-| `sqft` | Integer (300–3500) | Total carpet area |
-| `bathrooms` | Integer (1–4) | Number of bathrooms |
-| `floor` | Integer (0–25) | Floor level |
-| `parking` | Binary (0/1) | Parking availability |
-| `gym` | Binary (0/1) | Gym facility |
-| `swimming_pool` | Binary (0/1) | Swimming pool |
-| `garden` | Binary (0/1) | Garden/landscaping |
-| `security` | Binary (0/1) | 24/7 security |
-| `clubhouse` | Binary (0/1) | Clubhouse facility |
-| `amenities_score` | Integer (0–6) | Sum of all amenity flags |
-
-### Performance
-
-| Metric | Train | Test |
-|--------|-------|------|
-| **RMSE** | 2.46 L | 11.92 L |
-| **MAE** | 1.87 L | 8.37 L |
-| **R²** | 0.9963 | 0.9079 |
-| **CV R² (5-fold)** | — | 0.9059 ± 0.008 |
-
-### Dataset
-
-The training dataset consists of **2,000 synthetic property records** generated from real market research data:
-
-- **Price calibration**: Based on actual per-sq.ft. rates from real estate portals (MagicBricks, NoBroker, Housing.com, 99acres)
-- **Price modifiers**: Floor premium (+0.4%/floor), amenity premiums (1.5–3% each), BHK efficiency scaling
-- **Distribution**: 52% Dehu–Solapur corridor, 48% Kolhapur–Nashik corridor
-- **Price range**: ₹18.8L – ₹311.7L
+| Category | Features |
+|----------|----------|
+| **Property** | BHK, Sqft, Bathrooms, Floor |
+| **Location** | Corridor, Locality |
+| **Amenities** | Parking, Gym, Swimming Pool, Garden, Security, Clubhouse |
+| **Derived** | Amenities Score (sum of all amenity flags) |
 
 ---
 
-## 📡 API Reference
+## 📡 API Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| `GET` | `/api/health` | Health check with model metrics |
+| `GET` | `/api/health` | Health check with MongoDB status |
 | `GET` | `/api/meta` | Model metadata (corridors, localities) |
 | `POST` | `/api/predict` | Single property valuation |
-| `POST` | `/api/compare` | Compare price across both corridors |
+| `POST` | `/api/compare` | Side-by-side corridor comparison |
 | `GET` | `/api/stats` | Aggregate market statistics |
-| `GET` | `/api/amenity-impact` | Amenity impact analysis data |
+| `GET` | `/api/amenity-impact` | Amenity price impact analysis |
+| `GET` | `/api/history` | Recent predictions from MongoDB |
+| `GET` | `/api/history/corridor-stats` | Corridor aggregation from history |
+| `POST` | `/api/retrain` | Upload CSV to retrain model |
 
-### Example Request
+---
 
-```bash
-curl -X POST http://localhost:8000/api/predict \
-  -H "Content-Type: application/json" \
-  -d '{
-    "corridor": "dehu_solapur",
-    "locality": "Baner",
-    "bhk": 3,
-    "sqft": 1400,
-    "bathrooms": 2,
-    "floor": 8,
-    "parking": 1,
-    "gym": 1,
-    "swimming_pool": 0,
-    "garden": 0,
-    "security": 1,
-    "clubhouse": 0
-  }'
-```
+## 🌐 Deployment
 
-### Example Response
+### Backend → Render
 
-```json
-{
-  "predicted_price_lakhs": 112.91,
-  "price_per_sqft": 8065,
-  "corridor": "dehu_solapur",
-  "locality": "Baner",
-  "confidence_band": {
-    "low": 103.88,
-    "high": 121.94
-  },
-  "input_summary": {
-    "bhk": 3,
-    "sqft": 1400,
-    "bathrooms": 2,
-    "floor": 8,
-    "amenities_score": 3
-  }
-}
-```
+| Setting | Value |
+|---------|-------|
+| **Root Directory** | `backend` |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `uvicorn main:app --host 0.0.0.0 --port $PORT` |
+| **Environment Variable** | `MONGODB_URI` = your Atlas connection string |
+
+### Frontend → Vercel
+
+| Setting | Value |
+|---------|-------|
+| **Root Directory** | `frontend` |
+| **Framework Preset** | Vite |
+| **Build Command** | `npm run build` |
+| **Output Directory** | `dist` |
+| **Environment Variable** | `VITE_API_BASE_URL` = `https://your-render-app.onrender.com/api` |
 
 ---
 
@@ -208,45 +181,41 @@ curl -X POST http://localhost:8000/api/predict \
 ```
 AI-Powered-Property-Price-Predictor/
 ├── backend/
-│   ├── main.py                    # FastAPI application
-│   ├── requirements.txt           # Python dependencies
 │   ├── data/
-│   │   ├── generate_dataset.py    # Synthetic data generator
-│   │   └── pune_properties.csv    # Generated dataset
-│   └── model/
-│       ├── train_model.py         # XGBoost training pipeline
-│       ├── xgb_pipeline.joblib    # Serialized trained model
-│       ├── metrics.json           # Training metrics
-│       └── model_meta.json        # Model metadata
+│   │   ├── generate_dataset.py      # Synthetic data generator
+│   │   └── pune_properties.csv      # Training dataset
+│   ├── model/
+│   │   ├── train_model.py           # XGBoost training pipeline
+│   │   ├── xgb_pipeline.joblib      # Trained model artifact
+│   │   ├── model_meta.json          # Corridors & localities metadata
+│   │   └── metrics.json             # Model performance metrics
+│   ├── database.py                  # MongoDB connection module
+│   ├── main.py                      # FastAPI application
+│   ├── requirements.txt             # Python dependencies
+│   └── .env                         # Environment variables (gitignored)
 ├── frontend/
-│   ├── index.html                 # HTML entry point
-│   ├── package.json               # Node dependencies
-│   ├── tailwind.config.js         # Tailwind design system
-│   ├── public/
-│   │   └── favicon.svg            # Custom favicon
-│   └── src/
-│       ├── main.jsx               # React entry point
-│       ├── App.jsx                # Root application component
-│       ├── index.css              # Global styles + design system
-│       ├── api.js                 # API service layer
-│       └── components/
-│           ├── Header.jsx         # Navigation + corridor toggle
-│           ├── PredictionForm.jsx # Property input form
-│           ├── PredictionResult.jsx # Price display + comparison
-│           ├── Dashboard.jsx      # Charts + analytics
-│           └── Footer.jsx         # Footer with credits
+│   ├── src/
+│   │   ├── components/              # Reusable UI components
+│   │   ├── pages/                   # Route-level page components
+│   │   ├── api.js                   # API service layer
+│   │   ├── App.jsx                  # Root app with routing
+│   │   ├── index.css                # Design system & theme
+│   │   └── main.jsx                 # Entry point
+│   ├── package.json
+│   └── vite.config.js
+├── sample_data.csv                  # Template for model retraining
 ├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 📜 License
+## 📄 License
 
-This project is built for educational and demonstration purposes  
+This project is for educational and demonstration purposes.
 
 ---
 
 <p align="center">
-  Built with ❤️ for Pune's real estate market
+  <strong>Pune EstateLens</strong> — AI-Powered Property Intelligence
 </p>
