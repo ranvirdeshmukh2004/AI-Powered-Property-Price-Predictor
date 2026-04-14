@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base Resets ─── */
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: #020617;
+    color: #e2e8f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(99, 102, 241, 0.4);
+    color: #fff;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0f172a;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4338ca;
+  }
+}
+
+/* ─── Design System Components ─── */
+@layer components {
+  /* Glassmorphism Card */
+  .glass-card {
+    @apply relative bg-surface-900/60 backdrop-blur-xl rounded-2xl border border-white/[0.06];
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .glass-card-hover {
+    @apply glass-card transition-all duration-300;
+  }
+
+  .glass-card-hover:hover {
+    @apply border-brand-500/30;
+    box-shadow: 
+      0 12px 40px rgba(0, 0, 0, 0.4),
+      0 0 30px rgba(99, 102, 241, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+  }
+
+  /* Premium Gradient Backgrounds */
+  .bg-mesh {
+    background: 
+      radial-gradient(ellipse at 20% 0%, rgba(245, 192, 41, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(239, 171, 15, 0.03) 0%, transparent 70%),
+      #121212;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center px-6 py-3 font-semibold text-white rounded-xl overflow-hidden transition-all duration-300;
+    background: linear-gradient(135deg, #d1870a 0%, #efab0f 50%, #f5c029 100%);
+    box-shadow: 0 4px 16px rgba(239, 171, 15, 0.25);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 8px 24px rgba(239, 171, 15, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(239, 171, 15, 0.2);
+  }
+
+  .btn-primary:disabled {
+    @apply opacity-50 cursor-not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-5 py-2.5 font-medium text-brand-300 rounded-xl border border-brand-500/30 transition-all duration-300;
+    background: rgba(239, 171, 15, 0.08);
+  }
+
+  .btn-secondary:hover {
+    @apply bg-brand-500/15 border-brand-400/50 text-brand-200;
+  }
+
+  /* Input Styles */
+  .input-field {
+    @apply w-full px-4 py-3 bg-surface-800/80 border border-white/[0.08] rounded-xl text-white placeholder-surface-400 transition-all duration-200 outline-none;
+  }
+
+  .input-field:focus {
+    @apply border-brand-500/50 ring-2 ring-brand-500/20;
+  }
+
+  .input-field:hover:not(:focus) {
+    @apply border-white/[0.12];
+  }
+
+  /* Chip Toggle */
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer select-none border;
+  }
+
+  .chip-inactive {
+    @apply chip bg-surface-800/60 border-white/[0.06] text-surface-400;
+  }
+
+  .chip-inactive:hover {
+    @apply bg-surface-700/60 border-white/[0.1] text-surface-300;
+  }
+
+  .chip-active {
+    @apply chip bg-brand-500/15 border-brand-500/40 text-brand-300;
+    box-shadow: 0 0 12px rgba(239, 171, 15, 0.15);
+  }
+
+  /* Section Title */
+  .section-title {
+    @apply font-display text-2xl md:text-3xl font-bold text-white tracking-tight;
+  }
+
+  .section-subtitle {
+    @apply text-surface-400 text-sm md:text-base mt-1;
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #f8d45d 0%, #efab0f 40%, #10b981 100%);
+  }
+
+  .gradient-text-brand {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #fbe79b 0%, #f8d45d 50%, #f5c029 100%);
+  }
+
+  /* Loading Shimmer */
+  .shimmer-bg {
+    background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.08) 50%, transparent 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* Stat Card */
+  .stat-value {
+    @apply font-display text-3xl md:text-4xl font-bold text-white tracking-tight leading-none;
+  }
+
+  .stat-label {
+    @apply text-xs uppercase tracking-wider text-surface-400 font-medium mt-1;
+  }
+
+  /* Tooltip */
+  .tooltip-box {
+    @apply absolute z-50 px-3 py-2 text-xs font-medium text-white bg-surface-800/95 backdrop-blur-sm rounded-lg border border-white/[0.08] shadow-lg;
+  }
+
+  /* Divider */
+  .divider {
+    @apply border-t border-white/[0.06];
+  }
+
+  /* Badge */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold;
+  }
+
+  .badge-brand {
+    @apply badge bg-brand-500/15 text-brand-300 border border-brand-500/25;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent-500/15 text-accent-400 border border-accent-500/25;
+  }
+}
+
+/* ─── Utility Classes ─── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animate-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-400 {
+    animation-delay: 400ms;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+}
+
+/* ─── Recharts Customization ─── */
+.recharts-cartesian-grid-horizontal line,
+.recharts-cartesian-grid-vertical line {
+  stroke: rgba(255, 255, 255, 0.04) !important;
+}
+
+.recharts-text.recharts-cartesian-axis-tick-value {
+  fill: #94a3b8 !important;
+  font-size: 11px !important;
+  font-family: 'Inter', sans-serif !important;
+}
+
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+.recharts-default-tooltip {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+  padding: 12px 16px !important;
+}
+
+.recharts-tooltip-label {
+  color: #e2e8f0 !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  margin-bottom: 6px !important;
+}
+
+.recharts-tooltip-item {
+  color: #cbd5e1 !important;
+  font-size: 12px !important;
+  padding: 2px 0 !important;
+}
+
+.recharts-legend-item-text {
+  color: #94a3b8 !important;
+  font-size: 12px !important;
+}

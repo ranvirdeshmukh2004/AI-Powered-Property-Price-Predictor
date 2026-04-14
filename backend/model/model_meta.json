@@ -1,0 +1,44 @@
+{
+  "corridors": [
+    "dehu_solapur",
+    "kolhapur_nashik"
+  ],
+  "localities": {
+    "dehu_solapur": [
+      "Baner",
+      "Dehu Road",
+      "Hadapsar",
+      "Kiwale",
+      "Loni Kalbhor",
+      "Manjri",
+      "Ravet",
+      "Uruli Kanchan",
+      "Wakad"
+    ],
+    "kolhapur_nashik": [
+      "Alandi",
+      "Balewadi",
+      "Bhosari",
+      "Chakan",
+      "Hinjewadi",
+      "Khed Shivapur",
+      "Moshi",
+      "Sinhagad Road"
+    ]
+  },
+  "features": [
+    "corridor",
+    "locality",
+    "bhk",
+    "sqft",
+    "bathrooms",
+    "floor",
+    "parking",
+    "gym",
+    "swimming_pool",
+    "garden",
+    "security",
+    "clubhouse",
+    "amenities_score"
+  ]
+}
