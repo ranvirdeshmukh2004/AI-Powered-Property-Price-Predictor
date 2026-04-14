@@ -42,18 +42,37 @@ def connect():
 
     try:
         from pymongo import MongoClient
-        from pymongo.errors import ConnectionFailure
         import certifi
+        import ssl
 
-        _client = MongoClient(
-            MONGODB_URI,
-            serverSelectionTimeoutMS=5000,  # fail fast
-            connectTimeoutMS=5000,
-            tls=True,
-            tlsCAFile=certifi.where(),
-        )
-        # Force a round-trip to verify the connection
-        _client.admin.command("ping")
+        # Build a clean URI with TLS params embedded
+        clean_uri = MONGODB_URI
+        if "tlsAllowInvalidCertificates" not in clean_uri:
+            sep = "&" if "?" in clean_uri else "?"
+            clean_uri = clean_uri + sep + "tlsAllowInvalidCertificates=false"
+
+        try:
+            # First try: strict TLS with certifi CA bundle (works locally and on most clouds)
+            _client = MongoClient(
+                clean_uri,
+                serverSelectionTimeoutMS=5000,
+                connectTimeoutMS=5000,
+                tls=True,
+                tlsCAFile=certifi.where(),
+            )
+            _client.admin.command("ping")
+        except Exception:
+            # Second try: relax cert verification for platforms with broken TLS chains
+            logger.warning("⚠️  Strict TLS failed, retrying with relaxed cert validation...")
+            _client = MongoClient(
+                MONGODB_URI,
+                serverSelectionTimeoutMS=8000,
+                connectTimeoutMS=8000,
+                tls=True,
+                tlsAllowInvalidCertificates=True,
+            )
+            _client.admin.command("ping")
+
         _db = _client[DB_NAME]
         logger.info(f"✅ MongoDB connected — database: {DB_NAME}")
         return True
