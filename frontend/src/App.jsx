@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Home, Map, GitCompare, Database, Camera, History } from 'lucide-react';
+import { Home, Map, GitCompare, Database, History } from 'lucide-react';
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -8,7 +8,7 @@ import PredictPage from './pages/PredictPage';
 import MapPage from './pages/MapPage';
 import ComparePage from './pages/ComparePage';
 import AdminPage from './pages/AdminPage';
-import AestheticsPage from './pages/AestheticsPage';
+
 import HistoryPage from './pages/HistoryPage';
 
 function Navigation() {
@@ -17,7 +17,7 @@ function Navigation() {
   const links = [
     { path: '/', label: 'Valuation', icon: Home },
     { path: '/map', label: 'Map View', icon: Map },
-    { path: '/aesthetics', label: 'Aesthetics', icon: Camera },
+
     { path: '/compare', label: 'Compare', icon: GitCompare },
     { path: '/history', label: 'History', icon: History },
     { path: '/admin', label: 'Data & Model', icon: Database },
@@ -113,7 +113,7 @@ function AppContent() {
             <Routes>
               <Route path="/" element={<PredictPage />} />
               <Route path="/map" element={<MapPage />} />
-              <Route path="/aesthetics" element={<AestheticsPage />} />
+
               <Route path="/compare" element={<ComparePage />} />
               <Route path="/history" element={<HistoryPage />} />
               <Route path="/admin" element={<AdminPage />} />
