@@ -1,6 +1,6 @@
 import { ExternalLink, Cpu, Database, BarChart3 } from 'lucide-react';
 
-const REPO_URL = 'https://github.com/ranvirdeshmukh/AI-Powered-Property-Price-Predictor';
+const REPO_URL = 'https://github.com/ranvirdeshmukh2004/AI-Powered-Property-Price-Predictor';
 
 export default function Footer() {
   const techStack = [
