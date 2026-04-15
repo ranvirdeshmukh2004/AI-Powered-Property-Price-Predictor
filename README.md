@@ -61,24 +61,25 @@ The core feature. Enter property specifications and receive an instant AI-genera
 - Click markers to see locality-level price statistics
 
 ### 🔄 3. Corridor Comparison (Compare Page)
-- Enter a property configuration once
-- Instantly compare what the same property would cost in the alternative corridor
-- Price difference in ₹ Lakhs and percentage shown side by side
+- Configure two properties independently, each with their own corridor and locality
+- Side-by-side valuation results with price, per-sqft rate, and confidence bands
+- **Comparison Dashboard** appears after both predictions:
+  - Summary banner with price difference (₹L and %), rate comparison
+  - Bar chart comparing predicted prices
+  - Radar chart comparing feature profiles (BHK, area, floor, amenities)
+  - Confidence band overlap visualization
+  - Full factor breakdown table with impact explanations
+  - "Why the price difference?" dynamic explanation section
 
-### 🎨 4. Aesthetics Page
-- Real-time animated isometric 3D building visualization built entirely with native HTML5 Canvas 2D API (no heavy 3D libraries)
-- Floating "AI CORE" orb with glow effects, particle systems, and animated grid
-- Property image gallery of premium real estate
-
-### 📜 5. Prediction History (History Page — MongoDB)
+### 📜 4. Prediction History (History Page — MongoDB)
 - All predictions are automatically logged to MongoDB Atlas
 - Scatter chart showing Price vs. Area correlation colored by corridor
 - Side-by-side corridor comparison cards with average predicted price, count, min/max
 - Full sortable prediction table with timestamp, locality, BHK, floor, amenities, price
 
-### 🔁 6. Model Administration (Data & Model Page)
+### 🔁 5. Model Administration (Data & Model Page)
 - Upload a new `.csv` dataset to retrain the XGBoost model live
-- **Safe Fallback system**: staging environment used for training — if training fails, previous model stays live (zero downtime)
+- **Safe Fallback system**: staging environment used before live swap — if training fails, previous model stays live (zero downtime)
 - Post-retraining metrics (R², RMSE) displayed instantly
 - Required CSV schema documented in the UI
 
@@ -206,7 +207,7 @@ Base URL (production): `https://estatelens-backend.onrender.com`
 POST /api/predict
 {
   "corridor": "dehu_solapur",
-  "locality": "Wakad",
+  "locality": "Hadapsar",
   "bhk": 2,
   "sqft": 950,
   "bathrooms": 2,
@@ -227,7 +228,7 @@ POST /api/predict
   "predicted_price_lakhs": 72.5,
   "price_per_sqft": 7631.0,
   "corridor": "dehu_solapur",
-  "locality": "Wakad",
+  "locality": "Hadapsar",
   "confidence_band": { "low": 66.7, "high": 78.3 },
   "input_summary": {
     "bhk": 2,
@@ -269,23 +270,21 @@ AI-Powered-Property-Price-Predictor/
 │   │   │   ├── Footer.jsx            # Footer with GitHub CTA
 │   │   │   ├── Dashboard.jsx         # Market charts component
 │   │   │   ├── PredictionForm.jsx    # Property input form
-│   │   │   ├── PredictionResult.jsx  # Result display card
-│   │   │   └── PropertyTour3D.jsx    # Canvas 2D isometric animation
+│   │   │   └── PredictionResult.jsx  # Result display card
 │   │   ├── pages/
 │   │   │   ├── PredictPage.jsx       # Main valuation page
 │   │   │   ├── MapPage.jsx           # Interactive map with corridors
-│   │   │   ├── AestheticsPage.jsx    # 3D viz + property gallery
-│   │   │   ├── ComparePage.jsx       # Corridor comparison tool
+│   │   │   ├── ComparePage.jsx       # Corridor comparison with visualizations
 │   │   │   ├── HistoryPage.jsx       # MongoDB prediction history
 │   │   │   └── AdminPage.jsx         # Model retraining dashboard
 │   │   ├── api.js                    # Centralized API service layer
 │   │   ├── App.jsx                   # Root with routing & navigation
 │   │   ├── index.css                 # Design system (Tailwind + custom tokens)
 │   │   └── main.jsx                  # Entry point
+│   ├── vercel.json                   # SPA routing rewrites for Vercel
 │   ├── package.json
 │   └── vite.config.js
 │
-├── assets/                           # README images
 ├── sample_data.csv                   # CSV template for model retraining
 ├── .gitignore
 └── README.md
@@ -303,7 +302,7 @@ AI-Powered-Property-Price-Predictor/
 ### 1. Clone
 
 ```bash
-git clone https://github.com/ranvirdeshmukh/AI-Powered-Property-Price-Predictor.git
+git clone https://github.com/ranvirdeshmukh2004/AI-Powered-Property-Price-Predictor.git
 cd AI-Powered-Property-Price-Predictor
 ```
 
@@ -380,5 +379,5 @@ This project is submitted as part of a technical hiring assessment. All rights r
   <strong>Pune EstateLens</strong> — Production-Grade AI Property Intelligence<br/>
   <a href="https://ai-powered-property-price-predictor.vercel.app">Live App</a> • 
   <a href="https://estatelens-backend.onrender.com/docs">API Docs</a> • 
-  <a href="https://github.com/ranvirdeshmukh/AI-Powered-Property-Price-Predictor">Source Code</a>
+  <a href="https://github.com/ranvirdeshmukh2004/AI-Powered-Property-Price-Predictor">Source Code</a>
 </p>
