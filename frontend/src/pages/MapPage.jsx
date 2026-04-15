@@ -10,26 +10,22 @@ delete L.Icon.Default.prototype._getIconUrl;
 
 // Approximate coordinates for key Pune localities
 const GEODATA = {
-  // Dehu - Solapur Corridor
+  // Dehu - Solapur Corridor (West → Southeast)
   'Dehu Road': [18.7167, 73.7667],
   'Kiwale': [18.6360, 73.7380],
   'Ravet': [18.6433, 73.7431],
-  'Wakad': [18.5987, 73.7688],
-  'Baner': [18.5590, 73.7868],
   'Hadapsar': [18.4967, 73.9417],
   'Manjri': [18.5135, 73.9780],
   'Loni Kalbhor': [18.4900, 74.0200],
   'Uruli Kanchan': [18.4950, 74.1350],
   
-  // Kolhapur - Nashik Corridor
+  // Kolhapur - Nashik Corridor (South → North)
+  'Katraj': [18.4478, 73.8553],
   'Khed Shivapur': [18.3490, 73.8340],
-  'Sinhagad Road': [18.4830, 73.8300],
-  'Hinjewadi': [18.5913, 73.7389],
-  'Balewadi': [18.5760, 73.7788],
   'Bhosari': [18.6278, 73.8498],
+  'Chakan': [18.7500, 73.8667],
   'Moshi': [18.6650, 73.8500],
   'Alandi': [18.6757, 73.8953],
-  'Chakan': [18.7500, 73.8667],
 };
 
 const CORRIDOR_DATA = {

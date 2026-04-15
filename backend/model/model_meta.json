@@ -5,25 +5,21 @@
   ],
   "localities": {
     "dehu_solapur": [
-      "Baner",
       "Dehu Road",
       "Hadapsar",
       "Kiwale",
       "Loni Kalbhor",
       "Manjri",
       "Ravet",
-      "Uruli Kanchan",
-      "Wakad"
+      "Uruli Kanchan"
     ],
     "kolhapur_nashik": [
       "Alandi",
-      "Balewadi",
       "Bhosari",
       "Chakan",
-      "Hinjewadi",
+      "Katraj",
       "Khed Shivapur",
-      "Moshi",
-      "Sinhagad Road"
+      "Moshi"
     ]
   },
   "features": [

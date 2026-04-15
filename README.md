@@ -27,8 +27,8 @@
 
 | Corridor | Direction | Key Localities |
 |----------|-----------|----------------|
-| **Dehu Road → Solapur Road** | West → Southeast | Dehu Road, Kiwale, Ravet, Wakad, Baner, Hadapsar, Manjri, Loni Kalbhor, Uruli Kanchan |
-| **Kolhapur Road → Nashik Road** | South → North | Khed Shivapur, Sinhagad Road, Hinjewadi, Balewadi, Chakan, Bhosari, Moshi, Alandi |
+| **Dehu Road → Solapur Road** | West → Southeast | Dehu Road, Kiwale, Ravet, Hadapsar, Manjri, Loni Kalbhor, Uruli Kanchan |
+| **Kolhapur Road → Nashik Road** | South → North | Katraj, Khed Shivapur, Bhosari, Chakan, Moshi, Alandi |
 
 These two corridors represent Pune's highest infrastructure investment zones (metro, IT parks, ring roads), making them ideal for property price modeling.
 
@@ -93,7 +93,7 @@ The model is trained on a synthetic dataset of **2,000+ Pune residential propert
 | Field | Type | Description |
 |-------|------|-------------|
 | `corridor` | categorical | `dehu_solapur` or `kolhapur_nashik` |
-| `locality` | categorical | One of 17 localities |
+| `locality` | categorical | One of 13 localities |
 | `bhk` | integer | Bedroom count (1–4) |
 | `sqft` | integer | Total carpet area (300–3500) |
 | `bathrooms` | integer | Bathroom count (1–4) |

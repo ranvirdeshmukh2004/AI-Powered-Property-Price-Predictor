@@ -20,26 +20,22 @@ np.random.seed(42)
 # ──────────────────────────────────────────────────────────
 
 LOCALITY_PROFILES = {
-    # ── Corridor 1: Dehu Road → Solapur Road ──
+    # ── Corridor 1: Dehu Road → Solapur Road (West → Southeast, NH65) ──
     "dehu_solapur": {
         "Dehu Road":       {"base_rate": 5200,  "std": 600,  "premium_factor": 1.00},
         "Kiwale":          {"base_rate": 5800,  "std": 500,  "premium_factor": 1.03},
         "Ravet":           {"base_rate": 6500,  "std": 700,  "premium_factor": 1.06},
-        "Wakad":           {"base_rate": 8200,  "std": 800,  "premium_factor": 1.15},
-        "Baner":           {"base_rate": 9000,  "std": 900,  "premium_factor": 1.20},
         "Hadapsar":        {"base_rate": 7500,  "std": 750,  "premium_factor": 1.10},
         "Manjri":          {"base_rate": 6200,  "std": 600,  "premium_factor": 1.04},
         "Loni Kalbhor":    {"base_rate": 5000,  "std": 500,  "premium_factor": 1.00},
         "Uruli Kanchan":   {"base_rate": 4600,  "std": 450,  "premium_factor": 0.97},
     },
-    # ── Corridor 2: Kolhapur Road → Nashik Road ──
+    # ── Corridor 2: Kolhapur Road → Nashik Road (South → North) ──
     "kolhapur_nashik": {
+        "Katraj":          {"base_rate": 6200,  "std": 620,  "premium_factor": 1.06},
         "Khed Shivapur":   {"base_rate": 5500,  "std": 550,  "premium_factor": 1.02},
-        "Sinhagad Road":   {"base_rate": 7800,  "std": 800,  "premium_factor": 1.12},
-        "Hinjewadi":       {"base_rate": 8500,  "std": 850,  "premium_factor": 1.18},
-        "Balewadi":        {"base_rate": 9500,  "std": 900,  "premium_factor": 1.22},
-        "Chakan":          {"base_rate": 5000,  "std": 500,  "premium_factor": 1.00},
         "Bhosari":         {"base_rate": 6000,  "std": 600,  "premium_factor": 1.05},
+        "Chakan":          {"base_rate": 5000,  "std": 500,  "premium_factor": 1.00},
         "Moshi":           {"base_rate": 5400,  "std": 520,  "premium_factor": 1.01},
         "Alandi":          {"base_rate": 5100,  "std": 480,  "premium_factor": 0.99},
     },
