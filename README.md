@@ -1,4 +1,4 @@
-# 🏙️ Pune EstateLens — AI-Powered Property Price Predictor
+# Pune EstateLens — AI-Powered Property Price Predictor
 
 <p align="center">
   <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&style=for-the-badge" />
@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <strong>🌐 Live Demo: <a href="https://ai-powered-property-price-predictor.vercel.app">ai-powered-property-price-predictor.vercel.app</a></strong><br/>
-  <strong>⚙️ API: <a href="https://estatelens-backend.onrender.com/docs">estatelens-backend.onrender.com/docs</a></strong>
+  <strong>🌐 Live Demo: <a href="https://ai-powered-property-price-predictor.vercel.app" target="_blank" rel="noopener noreferrer">ai-powered-property-price-predictor.vercel.app ↗</a></strong><br/>
+  <strong>⚙️ API: <a href="https://estatelens-backend.onrender.com/docs" target="_blank" rel="noopener noreferrer">estatelens-backend.onrender.com/docs ↗</a></strong>
 </p>
 
 ---
@@ -82,6 +82,12 @@ The core feature. Enter property specifications and receive an instant AI-genera
 - **Safe Fallback system**: staging environment used before live swap — if training fails, previous model stays live (zero downtime)
 - Post-retraining metrics (R², RMSE) displayed instantly
 - Required CSV schema documented in the UI
+
+### 🎨 6. Premium Prop-Tech UI/UX
+- Immersive 100vh scrolling hero landing page
+- Professionally designed Charcoal and Amber dark mode aesthetic
+- Seamless glassmorphism interface components with interactive hover states
+- Built-in "Market Aesthetics" luxury architectural gallery
 
 ---
 
@@ -369,15 +375,9 @@ Frontend runs at: `http://localhost:5173` (or next available port)
 
 ---
 
-## 📄 License
-
-This project is submitted as part of a technical hiring assessment. All rights reserved.
-
----
-
 <p align="center">
   <strong>Pune EstateLens</strong> — Production-Grade AI Property Intelligence<br/>
-  <a href="https://ai-powered-property-price-predictor.vercel.app">Live App</a> • 
-  <a href="https://estatelens-backend.onrender.com/docs">API Docs</a> • 
-  <a href="https://github.com/ranvirdeshmukh2004/AI-Powered-Property-Price-Predictor">Source Code</a>
+  <a href="https://ai-powered-property-price-predictor.vercel.app" target="_blank" rel="noopener noreferrer">Live App ↗</a> • 
+  <a href="https://estatelens-backend.onrender.com/docs" target="_blank" rel="noopener noreferrer">API Docs ↗</a> • 
+  <a href="https://github.com/ranvirdeshmukh2004/AI-Powered-Property-Price-Predictor" target="_blank" rel="noopener noreferrer">Source Code ↗</a>
 </p>
